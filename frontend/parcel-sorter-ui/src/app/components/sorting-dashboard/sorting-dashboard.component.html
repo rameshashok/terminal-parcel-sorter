@@ -1,0 +1,40 @@
+<div class="dashboard">
+  <div class="stats-row">
+    <mat-card class="stat-card">
+      <mat-icon color="primary">inbox</mat-icon>
+      <div class="stat-value">{{ countByStatus('RECEIVED') }}</div>
+      <div class="stat-label">Received</div>
+    </mat-card>
+    <mat-card class="stat-card">
+      <mat-icon color="accent">autorenew</mat-icon>
+      <div class="stat-value">{{ countByStatus('SORTING') }}</div>
+      <div class="stat-label">Sorting</div>
+    </mat-card>
+    <mat-card class="stat-card">
+      <mat-icon color="warn">check_circle</mat-icon>
+      <div class="stat-value">{{ countByStatus('SORTED') }}</div>
+      <div class="stat-label">Sorted</div>
+    </mat-card>
+    <mat-card class="stat-card">
+      <mat-icon>local_shipping</mat-icon>
+      <div class="stat-value">{{ countByStatus('DISPATCHED') }}</div>
+      <div class="stat-label">Dispatched</div>
+    </mat-card>
+  </div>
+
+  <h3>Belt Status</h3>
+  <div class="belts-grid">
+    <mat-card *ngFor="let belt of belts" class="belt-card">
+      <mat-card-header>
+        <mat-card-title>{{ belt }}</mat-card-title>
+        <mat-card-subtitle>{{ beltParcels(belt).length }} parcels</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngFor="let p of beltParcels(belt)" class="parcel-chip">
+          {{ p.trackingNumber }}
+        </div>
+        <div *ngIf="beltParcels(belt).length === 0" class="empty-belt">Empty</div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

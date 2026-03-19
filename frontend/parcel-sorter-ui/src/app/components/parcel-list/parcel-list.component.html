@@ -1,0 +1,50 @@
+<mat-table [dataSource]="parcels" class="w-full">
+  <ng-container matColumnDef="trackingNumber">
+    <mat-header-cell *matHeaderCellDef>Tracking #</mat-header-cell>
+    <mat-cell *matCellDef="let p">{{ p.trackingNumber }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="origin">
+    <mat-header-cell *matHeaderCellDef>Origin</mat-header-cell>
+    <mat-cell *matCellDef="let p">{{ p.origin }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="destination">
+    <mat-header-cell *matHeaderCellDef>Destination</mat-header-cell>
+    <mat-cell *matCellDef="let p">{{ p.destination }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="postalCode">
+    <mat-header-cell *matHeaderCellDef>Postal Code</mat-header-cell>
+    <mat-cell *matCellDef="let p">{{ p.postalCode }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="weightKg">
+    <mat-header-cell *matHeaderCellDef>Weight (kg)</mat-header-cell>
+    <mat-cell *matCellDef="let p">{{ p.weightKg }}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="status">
+    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+    <mat-cell *matCellDef="let p">
+      <mat-chip [color]="statusColor(p.status)" highlighted>{{ p.status }}</mat-chip>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="assignedBelt">
+    <mat-header-cell *matHeaderCellDef>Belt</mat-header-cell>
+    <mat-cell *matCellDef="let p">
+      <span [matTooltip]="p.aiReasoning ?? ''">{{ p.assignedBelt ?? '—' }}</span>
+    </mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+    <mat-cell *matCellDef="let p">
+      <button mat-icon-button color="primary" (click)="sort(p)" [disabled]="p.status !== 'RECEIVED'" matTooltip="Sort">
+        <mat-icon>sort</mat-icon>
+      </button>
+      <button mat-icon-button color="accent" (click)="dispatch(p)" [disabled]="p.status !== 'SORTED'" matTooltip="Dispatch">
+        <mat-icon>local_shipping</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="delete(p)" matTooltip="Delete">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>

@@ -1,0 +1,28 @@
+<mat-card>
+  <mat-card-header><mat-card-title>Register New Parcel</mat-card-title></mat-card-header>
+  <mat-card-content>
+    <form (ngSubmit)="submit()" #f="ngForm" class="form-grid">
+      <mat-form-field>
+        <mat-label>Tracking Number</mat-label>
+        <input matInput [(ngModel)]="parcel.trackingNumber" name="trackingNumber" required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Origin</mat-label>
+        <input matInput [(ngModel)]="parcel.origin" name="origin" required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Destination</mat-label>
+        <input matInput [(ngModel)]="parcel.destination" name="destination" required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Postal Code</mat-label>
+        <input matInput [(ngModel)]="parcel.postalCode" name="postalCode" required>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Weight (kg)</mat-label>
+        <input matInput type="number" [(ngModel)]="parcel.weightKg" name="weightKg" required min="0.1">
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">Register Parcel</button>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Box body -->
+  <polygon points="32,6 58,20 58,44 32,58 6,44 6,20" fill="#1565C0"/>
+  <!-- Box top face -->
+  <polygon points="32,6 58,20 32,34 6,20" fill="#1E88E5"/>
+  <!-- Box tape/center line -->
+  <polygon points="32,34 58,20 58,44 32,58" fill="#1565C0"/>
+  <polygon points="32,34 6,20 6,44 32,58" fill="#0D47A1"/>
+  <!-- Tape strip top -->
+  <polygon points="32,6 40,10 32,14 24,10" fill="#FFC107"/>
+  <!-- Tape strip vertical -->
+  <polygon points="29,14 35,14 35,58 29,58" fill="#FFC107" opacity="0.6"/>
+</svg>

@@ -1,0 +1,21 @@
+# Secrets
+.env
+
+# Maven
+backend/parcel-sorter/target/
+backend/parcel-sorter/.mvn/wrapper/maven-wrapper.jar
+
+# Node / Angular
+frontend/parcel-sorter-ui/node_modules/
+frontend/parcel-sorter-ui/dist/
+frontend/parcel-sorter-ui/.angular/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.class
+
+# OS
+.DS_Store
+Thumbs.db

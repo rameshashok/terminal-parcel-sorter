@@ -1,0 +1,23 @@
+<mat-card class="chat-card">
+  <mat-card-header>
+    <mat-icon mat-card-avatar>smart_toy</mat-icon>
+    <mat-card-title>AI Sorting Assistant (RAG)</mat-card-title>
+    <mat-card-subtitle>Ask about sorting rules, belt assignments, or parcel handling</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class="chat-messages">
+    <div *ngFor="let msg of messages" [class]="'message ' + msg.role">
+      <mat-icon>{{ msg.role === 'user' ? 'person' : 'smart_toy' }}</mat-icon>
+      <div class="bubble">{{ msg.text }}</div>
+    </div>
+    <mat-spinner *ngIf="loading" diameter="30"></mat-spinner>
+  </mat-card-content>
+  <mat-card-actions>
+    <mat-form-field class="full-width">
+      <mat-label>Ask a question...</mat-label>
+      <input matInput [(ngModel)]="question" (keyup.enter)="ask()" placeholder="e.g. Which belt handles postal code 1234?">
+      <button matSuffix mat-icon-button (click)="ask()" [disabled]="loading">
+        <mat-icon>send</mat-icon>
+      </button>
+    </mat-form-field>
+  </mat-card-actions>
+</mat-card>

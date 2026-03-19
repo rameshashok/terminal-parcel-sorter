@@ -1,0 +1,49 @@
+@use '@angular/material' as mat;
+
+html {
+  color-scheme: light;
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$orange-palette,
+      theme-type: light
+    ),
+    typography: Roboto,
+    density: 0
+  ));
+}
+
+body { font-family: Roboto, sans-serif; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.app-container { height: 100vh; }
+.sidenav { width: 220px; }
+.main-content { display: flex; flex-direction: column; height: 100%; }
+.content-area { padding: 24px; flex: 1; overflow: auto; }
+
+.form-grid, .rule-form {
+  display: flex; flex-wrap: wrap; gap: 16px; align-items: center;
+  mat-form-field { flex: 1; min-width: 180px; }
+}
+
+.stats-row { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+.stat-card { flex: 1; min-width: 120px; text-align: center; padding: 16px; }
+.stat-value { font-size: 2rem; font-weight: bold; }
+.stat-label { color: rgba(0,0,0,.6); }
+
+.belts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+.belt-card { min-height: 120px; }
+.parcel-chip { background: #e3f2fd; border-radius: 4px; padding: 4px 8px; margin: 4px 0; font-size: 0.85rem; }
+.empty-belt { color: rgba(0,0,0,.4); font-style: italic; }
+
+.chat-card { height: calc(100vh - 160px); display: flex; flex-direction: column; }
+.chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.message { display: flex; gap: 8px; align-items: flex-start; }
+.message.user { flex-direction: row-reverse; }
+.bubble { background: #f5f5f5; border-radius: 8px; padding: 8px 12px; max-width: 80%; white-space: pre-wrap; }
+.message.user .bubble { background: #e3f2fd; }
+.full-width { width: 100%; }
+
+.active-link { background: rgba(0,0,0,.08); }
+.w-full { width: 100%; }

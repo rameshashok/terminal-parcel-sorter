@@ -1,4 +1,4 @@
-# NPS Terminal Parcel Sorting System
+# Terminal Parcel Sorting System
 
 Full-stack parcel sorting application with AI-powered RAG sorting decisions.
 

@@ -1,0 +1,7 @@
+aws_region         = "us-east-1"
+project_name       = "nps-agent"
+instance_type      = "t2.micro"          # free tier: 750 hrs/month
+public_key_path    = "C:/Users/conta/.ssh/id_rsa.pub"
+allowed_ssh_cidr   = "45.119.28.69/32"        # restrict SSH to your IP
+openrouter_api_key = "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"      # your actual key
+openrouter_model   = "google/gemma-3-4b-it:free"

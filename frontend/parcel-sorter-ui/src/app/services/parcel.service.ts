@@ -5,7 +5,7 @@ import { AiResponse, Parcel, SortingRule } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class ParcelService {
-  private base = 'http://localhost:8081/api';
+  private base = '/api';
 
   constructor(private http: HttpClient) {}
 

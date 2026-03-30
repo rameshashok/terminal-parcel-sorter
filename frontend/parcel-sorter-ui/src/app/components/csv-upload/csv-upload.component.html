@@ -1,0 +1,103 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Batch CSV Upload</mat-card-title>
+    <mat-card-subtitle>Upload multiple parcels at once. AI will flag and explain any invalid rows.</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <!-- Drop zone -->
+    <div class="drop-zone" (click)="fileInput.click()" *ngIf="!preview.length && !results.length">
+      <mat-icon>upload_file</mat-icon>
+      <p><strong>Click to select a CSV file</strong></p>
+      <p class="sample-hint">Expected columns: trackingNumber, origin, destination, postalCode, weightKg</p>
+      <p class="sample-hint">Example row: TRK001,London,Edinburgh,12345,2.5</p>
+    </div>
+    <input #fileInput type="file" accept=".csv" style="display:none" (change)="onFileSelected($event)">
+
+    <!-- Preview table -->
+    <div *ngIf="preview.length && !results.length">
+      <p><mat-icon style="vertical-align:middle;font-size:18px">description</mat-icon>
+        <strong> {{ fileName }}</strong> — {{ preview.length }} rows ready to upload</p>
+
+      <mat-table [dataSource]="preview" class="preview-table">
+        <ng-container matColumnDef="trackingNumber">
+          <mat-header-cell *matHeaderCellDef>Tracking #</mat-header-cell>
+          <mat-cell *matCellDef="let p">{{ p.trackingNumber }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="origin">
+          <mat-header-cell *matHeaderCellDef>Origin</mat-header-cell>
+          <mat-cell *matCellDef="let p">{{ p.origin }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="destination">
+          <mat-header-cell *matHeaderCellDef>Destination</mat-header-cell>
+          <mat-cell *matCellDef="let p">{{ p.destination }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="postalCode">
+          <mat-header-cell *matHeaderCellDef>Postal Code</mat-header-cell>
+          <mat-cell *matCellDef="let p">{{ p.postalCode }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="weightKg">
+          <mat-header-cell *matHeaderCellDef>Weight (kg)</mat-header-cell>
+          <mat-cell *matCellDef="let p">{{ p.weightKg }}</mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedPreviewCols"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedPreviewCols;"></mat-row>
+      </mat-table>
+
+      <div class="actions">
+        <button mat-raised-button color="primary" (click)="upload()" [disabled]="uploading">
+          <mat-icon>cloud_upload</mat-icon> Upload {{ preview.length }} Parcels
+        </button>
+        <button mat-stroked-button (click)="reset()">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <mat-progress-bar mode="indeterminate" *ngIf="uploading" style="margin:16px 0"></mat-progress-bar>
+
+    <!-- Results table -->
+    <div *ngIf="results.length">
+      <p>
+        <mat-chip color="primary" highlighted style="margin-right:8px">{{ successCount }} registered</mat-chip>
+        <mat-chip color="warn" highlighted *ngIf="errorCount">{{ errorCount }} errors</mat-chip>
+      </p>
+
+      <mat-table [dataSource]="results">
+        <ng-container matColumnDef="row">
+          <mat-header-cell *matHeaderCellDef style="max-width:60px">Row</mat-header-cell>
+          <mat-cell *matCellDef="let r" style="max-width:60px">{{ r.row }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="trackingNumber">
+          <mat-header-cell *matHeaderCellDef>Tracking #</mat-header-cell>
+          <mat-cell *matCellDef="let r">{{ r.trackingNumber }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="status">
+          <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
+          <mat-cell *matCellDef="let r">
+            <span [class]="r.status === 'OK' ? 'result-ok' : 'result-error'">
+              <mat-icon style="font-size:16px;vertical-align:middle">{{ r.status === 'OK' ? 'check_circle' : 'error' }}</mat-icon>
+              {{ r.status }}
+            </span>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="error">
+          <mat-header-cell *matHeaderCellDef>AI Guidance</mat-header-cell>
+          <mat-cell *matCellDef="let r">
+            <div *ngIf="r.aiGuidance" class="ai-guidance">
+              <mat-icon style="font-size:14px;vertical-align:middle">smart_toy</mat-icon>
+              {{ r.aiGuidance }}
+            </div>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedResultCols"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedResultCols;"></mat-row>
+      </mat-table>
+
+      <div class="actions">
+        <button mat-stroked-button (click)="reset()">Upload Another File</button>
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>

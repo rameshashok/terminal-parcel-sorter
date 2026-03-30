@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AiResponse, AssistRequest, AssistResponse, Parcel, SortingRule } from '../models/models';
+import { AiResponse, AssistRequest, AssistResponse, BatchResult, FeedbackRequest, Parcel, SortingRule } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class ParcelService {
@@ -51,5 +51,13 @@ export class ParcelService {
 
   getAssistance(request: AssistRequest): Observable<AssistResponse> {
     return this.http.post<AssistResponse>(`${this.base}/ai/assist`, request);
+  }
+
+  uploadBatch(parcels: Parcel[]): Observable<BatchResult[]> {
+    return this.http.post<BatchResult[]>(`${this.base}/parcels/batch`, parcels);
+  }
+
+  sendFeedback(request: FeedbackRequest): Observable<void> {
+    return this.http.post<void>(`${this.base}/ai/feedback`, request);
   }
 }

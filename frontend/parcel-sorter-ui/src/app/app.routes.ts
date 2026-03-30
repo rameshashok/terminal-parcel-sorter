@@ -4,12 +4,14 @@ import { ParcelListComponent } from './components/parcel-list/parcel-list.compon
 import { ParcelFormComponent } from './components/parcel-form/parcel-form.component';
 import { AiChatComponent } from './components/ai-chat/ai-chat.component';
 import { RulesManagerComponent } from './components/rules-manager/rules-manager.component';
+import { CsvUploadComponent } from './components/csv-upload/csv-upload.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: SortingDashboardComponent },
   { path: 'parcels', component: ParcelListComponent },
   { path: 'register', component: ParcelFormComponent },
+  { path: 'upload', component: CsvUploadComponent },
   { path: 'rules', component: RulesManagerComponent },
   { path: 'ai', component: AiChatComponent }
 ];

@@ -1,0 +1,48 @@
+name: Deploy to EC2
+
+# Triggers on every push to main EXCEPT when only terraform or docs change
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'terraform/**'
+      - '**.md'
+      - 'LICENSE'
+
+jobs:
+  deploy:
+    name: SSH deploy to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          # Fail the workflow if any command exits non-zero
+          script_stop: true
+          script: |
+            set -e
+            cd /opt/nps-agent/src
+
+            echo "==> Pulling latest code from main"
+            git fetch origin main
+            git reset --hard origin/main
+
+            echo "==> Rebuilding and restarting containers"
+            docker compose --env-file .env up -d --build
+
+            echo "==> Ensuring pgvector extension is enabled"
+            until docker compose exec -T postgres pg_isready -U postgres; do
+              echo "Waiting for postgres..."; sleep 3
+            done
+            docker compose exec -T postgres psql -U postgres -d parcel_sorter \
+              -c "CREATE EXTENSION IF NOT EXISTS vector;" 2>/dev/null || true
+
+            echo "==> Removing dangling images to free disk space"
+            docker image prune -f
+
+            echo "==> Deployment complete"
+            docker compose ps

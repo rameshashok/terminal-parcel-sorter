@@ -1,6 +1,13 @@
 # Secrets
 .env
 
+# Terraform — never commit real vars or state
+terraform/terraform.tfvars
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+
 # Maven
 backend/parcel-sorter/target/
 backend/parcel-sorter/.mvn/wrapper/maven-wrapper.jar

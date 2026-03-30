@@ -43,8 +43,22 @@
       <button mat-icon-button color="warn" (click)="delete(p)" matTooltip="Delete">
         <mat-icon>delete</mat-icon>
       </button>
+      <button mat-icon-button (click)="toggleReasoning(p)"
+              *ngIf="p.status === 'EXCEPTION' && p.aiReasoning"
+              matTooltip="Why did this fail?" style="color: #e65100">
+        <mat-icon>info</mat-icon>
+      </button>
     </mat-cell>
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
+
+<!-- EXCEPTION reasoning panel — shown below the row when expanded -->
+<div *ngFor="let p of parcels">
+  <div class="exception-panel" *ngIf="p.status === 'EXCEPTION' && p.aiReasoning && expandedParcelId === p.id">
+    <mat-icon>warning</mat-icon>
+    <strong> Processing failed for {{ p.trackingNumber }}</strong>
+    <p style="margin: 4px 0 0">{{ p.aiReasoning }}</p>
+  </div>
+</div>

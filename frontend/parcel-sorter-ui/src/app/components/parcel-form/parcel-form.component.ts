@@ -41,12 +41,23 @@ export class ParcelFormComponent {
   assistLoading = false;
   assistField = '';
 
+  // Tracks the last error shown per field to detect when the user corrects it
+  private lastGuidanceEvent: { field: string; errorCode: string } | null = null;
+
   constructor(private svc: ParcelService) {}
 
   onFieldBlur(fieldName: string, control: NgModel) {
     if (control.invalid && control.dirty) {
       const errorCode = Object.keys(control.errors || {})[0] || 'invalid';
       this.fetchGuidance(fieldName, errorCode, String(control.value ?? ''));
+    } else if (control.valid && this.lastGuidanceEvent?.field === fieldName) {
+      // Field was previously wrong, now corrected — send positive feedback
+      this.svc.sendFeedback({ field: fieldName, errorCode: this.lastGuidanceEvent.errorCode, corrected: true }).subscribe();
+      this.lastGuidanceEvent = null;
+      if (this.assistField === fieldName) {
+        this.assistGuidance = '';
+        this.assistField = '';
+      }
     }
   }
 
@@ -54,6 +65,7 @@ export class ParcelFormComponent {
     this.assistField = field;
     this.assistLoading = true;
     this.assistGuidance = '';
+    this.lastGuidanceEvent = { field, errorCode };
 
     const formContext = `trackingNumber="${this.parcel.trackingNumber || ''}", ` +
       `origin="${this.parcel.origin || ''}", destination="${this.parcel.destination || ''}", ` +
@@ -78,6 +90,7 @@ export class ParcelFormComponent {
         this.parcel = { weightKg: 1 };
         this.assistGuidance = '';
         this.assistField = '';
+        this.lastGuidanceEvent = null;
         this.created.emit();
       },
       error: (e) => {

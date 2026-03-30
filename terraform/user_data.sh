@@ -76,8 +76,8 @@ services:
       SUPABASE_DB_USER: postgres
       SUPABASE_DB_PASSWORD: postgres
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
-      OPENROUTER_MODEL: ${OPENROUTER_MODEL:-google/gemma-3-4b-it:free}
+      OPENROUTER_API_KEY: $${OPENROUTER_API_KEY}
+      OPENROUTER_MODEL: $${OPENROUTER_MODEL:-google/gemma-3-4b-it:free}
       QUARKUS_KAFKA_DEVSERVICES_ENABLED: "false"
     depends_on:
       postgres:

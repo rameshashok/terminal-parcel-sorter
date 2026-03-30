@@ -38,3 +38,17 @@ export interface AssistRequest {
 export interface AssistResponse {
   guidance: string;
 }
+
+export interface BatchResult {
+  row: number;
+  trackingNumber: string;
+  status: 'OK' | 'ERROR';
+  error?: string;
+  aiGuidance?: string;
+}
+
+export interface FeedbackRequest {
+  field: string;
+  errorCode: string;
+  corrected: boolean;
+}

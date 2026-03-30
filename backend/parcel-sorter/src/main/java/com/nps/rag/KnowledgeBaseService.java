@@ -49,7 +49,25 @@ public class KnowledgeBaseService {
             "Letters or codes starting with 0, 7, 8, or 9 are not supported. Use a numeric code like 12345 or 34567.",
 
         "Tracking Number validation error: The tracking number may be too short, too long, or contain invalid characters. " +
-            "Use only letters, numbers, and hyphens. Length must be 6-20 characters."
+            "Use only letters, numbers, and hyphens. Length must be 6-20 characters.",
+
+        "CSV batch upload format: The CSV file must have a header row with these exact column names: " +
+            "trackingNumber, origin, destination, postalCode, weightKg. " +
+            "Each subsequent row is one parcel. Example: TRK001,London,Edinburgh,12345,2.5",
+
+        "CSV upload row error - required field missing: One or more required columns are empty in a CSV row. " +
+            "All five fields must have a value: trackingNumber, origin, destination, postalCode, weightKg. " +
+            "Do not leave any cell blank. Remove entirely blank rows before uploading.",
+
+        "CSV upload row error - invalid format: A field in the CSV row does not match the expected format. " +
+            "trackingNumber must be 6-20 alphanumeric characters (hyphens allowed). " +
+            "postalCode must start with a digit 1-6. weightKg must be a number between 0.1 and 70.",
+
+        "CSV upload row error - weight out of range: The weight value in the CSV row is either too low (must be > 0.1 kg) " +
+            "or too high (must be <= 70 kg). Check the weightKg column for that row and correct the value.",
+
+        "CSV upload row error - invalid postal code: The postalCode column in the CSV row starts with an unsupported digit (0, 7, 8, or 9) " +
+            "or contains letters. Postal codes must begin with 1-6 to be routed to a valid sorting belt."
     );
 
     @Inject

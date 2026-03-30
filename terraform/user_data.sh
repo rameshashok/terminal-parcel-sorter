@@ -33,6 +33,7 @@ cat > /opt/nps-agent/docker-compose.yml << 'COMPOSE'
 services:
   postgres:
     image: pgvector/pgvector:pg16
+    restart: unless-stopped
     environment:
       POSTGRES_DB: parcel_sorter
       POSTGRES_USER: postgres
@@ -47,12 +48,14 @@ services:
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.6.0
+    restart: unless-stopped
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       KAFKA_HEAP_OPTS: "-Xmx128m -Xms128m"
 
   kafka:
     image: confluentinc/cp-kafka:7.6.0
+    restart: unless-stopped
     depends_on:
       - zookeeper
     environment:
@@ -69,6 +72,7 @@ services:
     build:
       context: ./backend/parcel-sorter
       dockerfile: Dockerfile
+    restart: unless-stopped
     ports:
       - "8081:8081"
     environment:
@@ -89,8 +93,13 @@ services:
     build:
       context: ./frontend/parcel-sorter-ui
       dockerfile: Dockerfile
+    restart: unless-stopped
     ports:
       - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/certbot:/var/www/certbot:ro
     depends_on:
       - backend
 

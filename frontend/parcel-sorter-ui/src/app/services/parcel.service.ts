@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AiResponse, Parcel, SortingRule } from '../models/models';
+import { AiResponse, AssistRequest, AssistResponse, Parcel, SortingRule } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class ParcelService {
@@ -47,5 +47,9 @@ export class ParcelService {
 
   askAi(question: string): Observable<AiResponse> {
     return this.http.post<AiResponse>(`${this.base}/ai/ask`, { question });
+  }
+
+  getAssistance(request: AssistRequest): Observable<AssistResponse> {
+    return this.http.post<AssistResponse>(`${this.base}/ai/assist`, request);
   }
 }

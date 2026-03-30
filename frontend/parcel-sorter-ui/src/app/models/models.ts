@@ -27,3 +27,14 @@ export interface SortingRule {
 export interface AiResponse {
   answer: string;
 }
+
+export interface AssistRequest {
+  field: string;
+  errorCode: string;
+  value: string;
+  formContext: string;
+}
+
+export interface AssistResponse {
+  guidance: string;
+}

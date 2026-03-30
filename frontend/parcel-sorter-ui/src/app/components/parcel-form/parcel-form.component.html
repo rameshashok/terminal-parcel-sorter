@@ -2,27 +2,51 @@
   <mat-card-header><mat-card-title>Register New Parcel</mat-card-title></mat-card-header>
   <mat-card-content>
     <form (ngSubmit)="submit()" #f="ngForm" class="form-grid">
-      <mat-form-field>
+
+      <mat-form-field class="full-width">
         <mat-label>Tracking Number</mat-label>
-        <input matInput [(ngModel)]="parcel.trackingNumber" name="trackingNumber" required>
+        <input matInput [(ngModel)]="parcel.trackingNumber" name="trackingNumber" required
+               #trackingCtrl="ngModel" (blur)="onFieldBlur('trackingNumber', trackingCtrl)">
       </mat-form-field>
-      <mat-form-field>
+
+      <mat-form-field class="full-width">
         <mat-label>Origin</mat-label>
-        <input matInput [(ngModel)]="parcel.origin" name="origin" required>
+        <input matInput [(ngModel)]="parcel.origin" name="origin" required
+               #originCtrl="ngModel" (blur)="onFieldBlur('origin', originCtrl)">
       </mat-form-field>
-      <mat-form-field>
+
+      <mat-form-field class="full-width">
         <mat-label>Destination</mat-label>
-        <input matInput [(ngModel)]="parcel.destination" name="destination" required>
+        <input matInput [(ngModel)]="parcel.destination" name="destination" required
+               #destinationCtrl="ngModel" (blur)="onFieldBlur('destination', destinationCtrl)">
       </mat-form-field>
-      <mat-form-field>
+
+      <mat-form-field class="full-width">
         <mat-label>Postal Code</mat-label>
-        <input matInput [(ngModel)]="parcel.postalCode" name="postalCode" required>
+        <input matInput [(ngModel)]="parcel.postalCode" name="postalCode" required
+               #postalCtrl="ngModel" (blur)="onFieldBlur('postalCode', postalCtrl)">
       </mat-form-field>
-      <mat-form-field>
+
+      <mat-form-field class="full-width">
         <mat-label>Weight (kg)</mat-label>
-        <input matInput type="number" [(ngModel)]="parcel.weightKg" name="weightKg" required min="0.1">
+        <input matInput type="number" [(ngModel)]="parcel.weightKg" name="weightKg" required min="0.1"
+               #weightCtrl="ngModel" (blur)="onFieldBlur('weightKg', weightCtrl)">
       </mat-form-field>
-      <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">Register Parcel</button>
+
+      <!-- AI Assistance Panel — appears automatically on validation errors -->
+      <div class="ai-assist-panel" *ngIf="assistGuidance || assistLoading">
+        <mat-icon>smart_toy</mat-icon>
+        <div>
+          <span class="assist-label">AI Assistant</span>
+          <mat-spinner *ngIf="assistLoading" diameter="16" style="display:inline-block"></mat-spinner>
+          <span *ngIf="assistGuidance">{{ assistGuidance }}</span>
+        </div>
+      </div>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="f.invalid">
+        Register Parcel
+      </button>
+
     </form>
   </mat-card-content>
 </mat-card>

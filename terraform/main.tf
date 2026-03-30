@@ -19,11 +19,11 @@ data "aws_ami" "amazon_linux_2023" {
   owners      = ["amazon"]
   filter {
     name   = "name"
-    values = ["al2023-ami-*-x86_64"]
+    values = ["al2023-ami-*-arm64"]
   }
   filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
+    name   = "architecture"
+    values = ["arm64"]
   }
 }
 
@@ -137,7 +137,7 @@ resource "aws_instance" "app" {
   key_name               = aws_key_pair.app.key_name
 
   root_block_device {
-    volume_size = 30
+    volume_size = 20
     volume_type = "gp3"
   }
 

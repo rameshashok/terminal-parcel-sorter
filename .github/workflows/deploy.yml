@@ -41,6 +41,12 @@ jobs:
             docker compose exec -T postgres psql -U postgres -d parcel_sorter \
               -c "CREATE EXTENSION IF NOT EXISTS vector;" 2>/dev/null || true
 
+            echo "==> Renewing SSL certificate if due"
+            certbot renew --quiet \
+              --pre-hook  "docker compose -f /opt/nps-agent/src/docker-compose.yml stop frontend" \
+              --post-hook "docker compose -f /opt/nps-agent/src/docker-compose.yml start frontend" \
+              2>/dev/null || true
+
             echo "==> Removing dangling images to free disk space"
             docker image prune -f
 

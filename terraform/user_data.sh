@@ -98,10 +98,21 @@ volumes:
   postgres_data:
 COMPOSE
 
+# ── Install Certbot ───────────────────────────────────────────────────────────
+dnf install -y certbot
+
 # ── Clone source code ─────────────────────────────────────────────────────────
 git clone https://github.com/rameshashok/terminal-parcel-sorter.git /opt/nps-agent/src
 cp /opt/nps-agent/docker-compose.yml /opt/nps-agent/src/docker-compose.yml
 cp /opt/nps-agent/.env /opt/nps-agent/src/.env
+
+# ── Get Let's Encrypt certificate (standalone, port 80 free at this point) ───
+DOMAIN="3-225-155-252.sslip.io"
+mkdir -p /var/www/certbot
+certbot certonly --standalone \
+  --non-interactive --agree-tos \
+  --email admin@nps-agent.local \
+  -d "$DOMAIN" || echo "WARNING: certbot failed, continuing without HTTPS"
 
 # ── Build and start all services ──────────────────────────────────────────────
 cd /opt/nps-agent/src
@@ -113,5 +124,9 @@ until docker compose exec -T postgres pg_isready -U postgres; do sleep 3; done
 
 docker compose exec -T postgres psql -U postgres -d parcel_sorter \
   -c "CREATE EXTENSION IF NOT EXISTS vector;"
+
+# ── Set up automatic cert renewal ─────────────────────────────────────────────
+echo "0 3 * * * root certbot renew --quiet --pre-hook 'docker compose -f /opt/nps-agent/src/docker-compose.yml stop frontend' --post-hook 'docker compose -f /opt/nps-agent/src/docker-compose.yml start frontend'" \
+  > /etc/cron.d/certbot-renew
 
 echo "Bootstrap complete"

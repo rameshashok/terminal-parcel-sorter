@@ -7,6 +7,11 @@ terraform/*.tfstate
 terraform/*.tfstate.backup
 terraform/.terraform/
 terraform/.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+
+# Claude Code memory
+.claude/
 
 # Maven
 backend/parcel-sorter/target/

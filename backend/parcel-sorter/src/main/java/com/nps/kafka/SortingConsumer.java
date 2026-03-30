@@ -1,6 +1,5 @@
 package com.nps.kafka;
 
-import com.nps.entity.Parcel;
 import com.nps.service.SortingService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
